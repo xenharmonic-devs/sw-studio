@@ -3,6 +3,7 @@ import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import { ShepardTone } from "./shepard";
 import { useCounterStore } from "./stores/counter";
+import { useSongStore } from "./stores/song";
 
 function playTones() {
   const dummyStore = useCounterStore();
@@ -34,6 +35,40 @@ function playTones() {
   }
   shepardTone.stop(now + 0.3 * 36);
 }
+
+const counter = useCounterStore();
+const song = useSongStore();
+
+function playSong() {
+  if (song.startTime === null) {
+    return;
+  }
+  const audioContext = song.audioContext;
+  const now = audioContext.currentTime;
+
+  const shepardTone = new ShepardTone(audioContext, 440.0, 3000.0);
+  shepardTone.type = "triangle";
+
+  const gain = audioContext.createGain();
+
+  gain.gain.setValueAtTime(0.0, now);
+
+  shepardTone.connect(gain).connect(audioContext.destination);
+
+  shepardTone.start();
+
+  let time = now;
+  for (const [recordedOn, frequency, recordedOff] of song.notes) {
+    time = recordedOn - song.startTime + now;
+    shepardTone.setFrequency(frequency, time);
+    gain.gain.setValueAtTime(0.25, time);
+    time = (recordedOff || recordedOn + 0.1) - song.startTime + now;
+    gain.gain.setValueAtTime(0.0, time);
+  }
+  shepardTone.stop(time + 0.5);
+
+  song.startTime = null;
+}
 </script>
 
 <template>
@@ -50,9 +85,15 @@ function playTones() {
       <HelloWorld msg="You did it!" />
       <button @click="playTones">Play shepard tones</button>
 
+      <p>Click me</p>
+      <button @click="counter.increment">{{ counter.count }}</button>
+      <p>Play song</p>
+      <button @click="playSong">Play</button>
+
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/grid">Grid</RouterLink>
       </nav>
     </div>
   </header>
