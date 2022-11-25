@@ -75,16 +75,18 @@ function tricolor(u: number, v: number) {
 }
 
 function label(u: number, v: number) {
-  if (u >= 0) {
-    if (v >= 0) {
-      return `${3 ** u * 5 ** v}/1`;
+  const threes = -u - v;
+  const fives = u;
+  if (threes >= 0) {
+    if (fives >= 0) {
+      return `${3 ** threes * 5 ** fives}/1`;
     }
-    return `${3 ** u}/${5 ** -v}`;
+    return `${3 ** threes}/${5 ** -fives}`;
   }
-  if (v >= 0) {
-    return `${5 ** v}/${3 ** -u}`;
+  if (fives >= 0) {
+    return `${5 ** fives}/${3 ** -threes}`;
   }
-  return `1/${3 ** -u * 5 ** -v}`;
+  return `1/${3 ** -threes * 5 ** -fives}`;
 }
 
 const mouseTone = ref<ShepardTone | null>(null);
@@ -96,7 +98,7 @@ function createTone(u: number, v: number) {
   const audioContext = song.audioContext;
   audioContext.resume();
 
-  let frequency = 3 ** u * 5 ** v;
+  let frequency = 3 ** (-u - v) * 5 ** u;
 
   const now = audioContext.currentTime;
 
