@@ -1,15 +1,9 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+  <main class="about">
+    <h1>Scale Workshop Studio</h1>
+    <p>
+      <a href="https://github.com/xenharmonic-devs/sw-studio">Sw Studio</a> is
+      being developed by Lumi Pakkanen
+    </p>
+  </main>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

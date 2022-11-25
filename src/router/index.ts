@@ -21,7 +21,7 @@ const router = createRouter({
       path: "/grid",
       name: "grid",
       component: () => import("../views/GridView.vue"),
-    }
+    },
   ],
 });
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
 import { ShepardTone } from "./shepard";
 import { useCounterStore } from "./stores/counter";
 import { useSongStore } from "./stores/song";
@@ -72,51 +71,70 @@ function playSong() {
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <button @click="playTones">Play shepard tones</button>
-
-      <p>Click me</p>
-      <button @click="counter.increment">{{ counter.count }}</button>
-      <p>Play song</p>
-      <button @click="playSong">Play</button>
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/grid">Grid</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+  <nav id="app-navigation">
+    <ul id="app-tabs">
+      <li>
+        <RouterLink to="/about"><strong>Sw</strong> Studio</RouterLink>
+      </li>
+      <li><RouterLink to="/">Home</RouterLink></li>
+      <li><RouterLink to="/grid">Grid</RouterLink></li>
+    </ul>
+  </nav>
   <RouterView />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<style>
+@import "@/assets/base.css";
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100vh;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+nav#app-navigation {
+  flex: 0 0 auto;
+  display: flex;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+#app > main {
+  flex: 1 1 auto;
+  overflow-y: hidden;
+}
+
+/* Navigation tabs */
+nav#app-navigation {
+  background-color: var(--color-accent);
+  color: white;
+  max-width: 100%;
+  overflow-x: auto;
+}
+ul#app-tabs {
+  padding: 0px;
+  margin: 0px;
+  white-space: nowrap;
+}
+nav#app-navigation ul li {
+  list-style-type: none;
+  display: inline-block;
+}
+nav#app-navigation ul li a {
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  color: white;
+  text-decoration: none;
+  cursor: default;
+}
+
+nav#app-navigation ul#app-tabs li a:hover {
+  background-color: var(--color-accent-deeper);
+}
+
+nav#app-navigation ul#app-tabs li a.router-link-exact-active,
+nav#app-navigation ul#app-tabs li a.router-link-exact-active:hover {
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 nav a.router-link-exact-active {
@@ -137,30 +155,24 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+/* Status indicator tray */
+#app-tray {
+  width: 100%;
+  text-align: right;
+  cursor: default;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+#app-tray ul {
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-accent-deeper);
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+#app-tray ul li {
+  color: var(--color-accent);
+}
 
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+#app-tray ul li .active {
+  color: var(--color-accent-text);
 }
 </style>
